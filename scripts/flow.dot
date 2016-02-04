@@ -1,9 +1,9 @@
 #!dot
 digraph {
-    "650 initial n=929" -> "650 clean n=919"[label=" Remove 10 samples with relationship errors"];
+    "650 initial n=929" -> "650 clean n=919"[label=" -10 samples (relationship errors)"];
 
-    "omni initial n=xxx" -> "omni clean n=xxx"[label=" Remove xx samples that failed QC; Remove xxx IBD duplicates"];
+    "omni initial n=1100" -> "omni clean n=1055"[label=" -45 samples (25 QC + 20 IBD duplicates [18 duplicate pairs + 1 triplicate])"];
 
     "650 clean n=919" -> "overlapping samples n=xxx";
-    "omni clean n=xxx" ->  "overlapping samples n=xxx";
+    "omni clean n=1055" ->  "overlapping samples n=xxx";
 }

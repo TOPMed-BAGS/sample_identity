@@ -12,5 +12,4 @@ plink --bfile ../data/input/650 \
       --remove ../data/working/del_list.txt \
       --make-bed --out ../data/input/650_clean
 
-
 rm -r ../data/working
