@@ -1,0 +1,9 @@
+#!dot
+digraph {
+    "650 initial n=929" -> "650 clean n=919"[label=" Remove 10 samples with relationship errors"];
+
+    "omni initial n=xxx" -> "omni clean n=xxx"[label=" Remove xx samples that failed QC; Remove xxx IBD duplicates"];
+
+    "650 clean n=919" -> "overlapping samples n=xxx";
+    "omni clean n=xxx" ->  "overlapping samples n=xxx";
+}
