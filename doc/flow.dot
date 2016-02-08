@@ -1,9 +1,13 @@
 #!dot
 digraph {
-    "650 initial n=929" -> "650 clean n=919"[label=" -10 samples (relationship errors)"];
+    INIT_SIX [label="650 initial (n=n_init_650)", shape=box]
+    INIT_OMNI [label="omni initial (n=n_init_omni)", shape=box]
+    CLEAN_SIX [label="650 clean (n=n_clean_650)", shape=box]
+    CLEAN_OMNI [label="omni clean (n=n_clean_omni)", shape=box]
+    OVERLAP [label="overlapping samples (n=n_overlap)", shape=box]
 
-    "omni initial n=1100" -> "omni clean n=1055"[label=" -45 samples (25 QC + 20 IBD duplicates [18 duplicate pairs + 1 triplicate])"];
-
-    "650 clean n=919" -> "overlapping samples n=xxx";
-    "omni clean n=1055" ->  "overlapping samples n=xxx";
+    INIT_SIX->CLEAN_SIX [label=" -n_650_del samples (relationship errors)"];
+    INIT_OMNI->CLEAN_OMNI [label=" -n_omni_del samples (n_omni_qc_del QC + n_omni_dupl_del IBD duplicates [18 duplicate pairs + 1 triplicate])"];
+    CLEAN_SIX->OVERLAP;
+    CLEAN_OMNI->OVERLAP;
 }

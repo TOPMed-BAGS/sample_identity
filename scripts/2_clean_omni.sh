@@ -11,7 +11,9 @@ grep "^26\t" ../input/omni.bim | cut -f2 >> non_autosome_snps.txt
 plink --bfile ../input/omni --exclude non_autosome_snps.txt --make-bed --out autosome
 
 #Remove samples that has been identified previously to have failed QC
+cp ../input/omni_qc_fail.txt  ../output/omni_delete.txt
 grep qc ../output/omni_delete.txt | cut -f1 > del.txt
+n_omni_qc_del=`wc -l del.txt | tr -s ' ' | cut -f2 -d' '`
 paste del.txt del.txt > excl_plate_well_ids.txt
 plink --bfile autosome --remove excl_plate_well_ids.txt --make-bed --out qc_autosome
 
@@ -45,8 +47,20 @@ cat ../../scripts/get_omni_duplicate_ids.R | R --vanilla
 
 #Remove duplicate samples
 grep duplicates ../output/omni_delete.txt | cut -f1 > del.txt
+n_omni_dupl_del=`wc -l del.txt | tr -s ' ' | cut -f2 -d' '`
 paste del.txt del.txt > excl_plate_well_ids.txt
 plink --bfile qc_autosome_snps --remove excl_plate_well_ids.txt --make-bed --out ../input/omni_clean
+
+#Record nrs for flow diagram
+n_init_omni=`wc -l ../input/omni.fam | tr -s ' ' | cut -f2 -d' '`
+n_omni_del="$(($n_omni_qc_del+$n_omni_dupl_del))"
+n_clean_omni=`wc -l ../input/omni_clean.fam | tr -s ' ' | cut -f2 -d' '`
+echo "n_init_omni $n_init_omni" >> ../output/flow_nrs.txt
+echo "n_omni_qc_del $n_omni_qc_del" >> ../output/flow_nrs.txt
+echo "n_omni_dupl_del $n_omni_dupl_del" >> ../output/flow_nrs.txt
+echo "n_omni_del $n_omni_del" >> ../output/flow_nrs.txt
+echo "n_clean_omni $n_clean_omni" >> ../output/flow_nrs.txt
+
 
 cd ..
 rm -r working
