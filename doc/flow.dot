@@ -4,7 +4,7 @@ digraph {
     INIT_OMNI [label="omni initial (n=n_init_omni)", shape=box]
     CLEAN_SIX [label="650 clean (n=n_clean_650)", shape=box]
     CLEAN_OMNI [label="omni clean (n=n_clean_omni)", shape=box]
-    OVERLAP [label="overlapping samples (n=n_overlap)", shape=box]
+    OVERLAP [label="overlapping samples (n=n_650_omni_overlap)", shape=box]
 
     INIT_SIX->CLEAN_SIX [label=" -n_650_del samples (relationship errors)"];
     INIT_OMNI->CLEAN_OMNI [label=" -n_omni_del samples (n_omni_qc_del QC + n_omni_dupl_del IBD duplicates [18 duplicate pairs + 1 triplicate])"];

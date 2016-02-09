@@ -10,12 +10,19 @@ grep "^24\t" ../input/omni.bim | cut -f2 >> non_autosome_snps.txt
 grep "^26\t" ../input/omni.bim | cut -f2 >> non_autosome_snps.txt
 plink --bfile ../input/omni --exclude non_autosome_snps.txt --make-bed --out autosome
 
+#Remove NHLBI control samples
+echo "LP6008052-DNA_D01 LP6008052-DNA_D01" > del.txt
+echo "LP6008052-DNA_E01 LP6008052-DNA_E01" >> del.txt
+echo "LP6008052-DNA_E02 LP6008052-DNA_E02" >> del.txt
+echo "LP6008079-DNA_A01 LP6008079-DNA_A01" >> del.txt
+plink --bfile autosome --remove del.txt --make-bed --out autosome_bags
+
 #Remove samples that has been identified previously to have failed QC
 cp ../input/omni_qc_fail.txt  ../output/omni_delete.txt
 grep qc ../output/omni_delete.txt | cut -f1 > del.txt
 n_omni_qc_del=`wc -l del.txt | tr -s ' ' | cut -f2 -d' '`
 paste del.txt del.txt > excl_plate_well_ids.txt
-plink --bfile autosome --remove excl_plate_well_ids.txt --make-bed --out qc_autosome
+plink --bfile autosome_bags --remove excl_plate_well_ids.txt --make-bed --out qc_autosome
 
 #Replace illumina kgp ids with rs ids
 cat ../../scripts/fix_snp_ids.R | R --vanilla --args qc_autosome.bim new_qc_autosome.bim
