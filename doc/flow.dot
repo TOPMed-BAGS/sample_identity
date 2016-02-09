@@ -1,17 +1,18 @@
 #!dot
 digraph {
-    INIT_SIX   [label="650 initial (n=n_init_650)", shape=box]
-    INIT_OMNI  [label="omni initial (n=n_init_omni)", shape=box]
-    CLEAN_SIX  [label="650 clean (n=n_clean_650)", shape=box]
-    CLEAN_OMNI [label="omni clean (n=n_clean_omni)", shape=box]
-    OVERLAP    [label="overlapping samples (n=n_650_omni_overlap)"]
-    DISCORDANT [label="discordant samples (n=n_discordant)"]
-    CROSSMATCH [label="crossmatched samples (n=n_crossmatched)"]
-    UNRESOLVED [label="unresolved samples (n=n_disc_unresolved)"]
-    FIXED_OMNI [label="omni 650 fixed (n=n_fixed_omni)", shape=box]
-    PED_FIXED_OMNI [label="omni pedigrees fixed (n=n_fixed_omni)", shape=box]
+    INIT_SIX       [label="650 initial (n=n_init_650)", shape=box]
+    INIT_OMNI      [label="omni initial (n=n_init_omni)", shape=box]
+    CLEAN_SIX      [label="650 clean (n=n_clean_650)", shape=box]
+    CLEAN_OMNI     [label="omni clean (n=n_clean_omni)", shape=box]
+    OVERLAP        [label="overlapping samples (n=n_650_omni_overlap)"]
+    DISCORDANT     [label="discordant samples (n=n_discordant)"]
+    CROSSMATCH     [label="crossmatched samples (n=n_crossmatched)"]
+    UNRESOLVED     [label="unresolved samples (n=n_disc_unresolved)"]
+    FIXED_OMNI     [label="omni 650 fixed (n=n_fixed_omni)", shape=box]
+    PAR_FIXED_OMNI [label="omni parents fixed (n=n_parents_fixed_omni)", shape=box]
     PED_ERRORS [label="pedigrees with errors (p=p_ped_errors)"]
-    FINAL_OMNI [label="omni final (n=n_final_omni)", shape=box]
+    PED_FIXED_OMNI [label="omni pedigrees fixed (n=n_ped_fixed_omni, p=p_ped_fixed_omni)", shape=box]
+    FINAL_OMNI     [label="omni final (n=n_final_omni, p=pfinal_omni)", shape=box]
 
     INIT_SIX       -> CLEAN_SIX [label=" -n_650_del samples (relationship errors)"];
     INIT_OMNI      -> CLEAN_OMNI [label=" -n_omni_del samples (n_omni_qc_del QC + n_omni_dupl_del IBD duplicates [18 duplicate pairs + 1 triplicate])"];
@@ -22,11 +23,12 @@ digraph {
     DISCORDANT     -> CROSSMATCH [label=" n_disc_resolved resolved"];
     DISCORDANT     -> UNRESOLVED [label=" n_disc_unresolved not resolved"];
     CROSSMATCH     -> FIXED_OMNI [label=" swap n_crossmatched samples"];
-    UNRESOLVED     -> PED_ERRORS [label=" consider family structure of 2 samples"];
-    UNRESOLVED     -> FIXED_OMNI [label=" delete 1 sample"];
-    FIXED_OMNI     -> PED_FIXED_OMNI [label=" merge n_merge_ped pedigrees, update n_update_fa fathers, update n_update_mo mothers"];
-    PED_FIXED_OMNI -> PED_ERRORS;
-    PED_ERRORS     -> FINAL_OMNI [label=" delete n_ped_del samples (n_no_sol no solution, n_omni_only_sol omni only solution)"];
-    PED_ERRORS     -> FINAL_OMNI [label=" swap n_ped_swap samples"];
+    UNRESOLVED     -> PED_ERRORS [label=" consider family structure of n_ped_unresolved samples"];
+    UNRESOLVED     -> FIXED_OMNI [label=" delete n_del_unresolved sample"];
+    FIXED_OMNI     -> PAR_FIXED_OMNI [label=" merge n_merge_ped pedigrees, update n_update_fa fathers, update n_update_mo mothers"];
+    PAR_FIXED_OMNI -> PED_ERRORS;
+    PED_ERRORS     -> PED_FIXED_OMNI [label=" delete n_ped_del samples (n_no_sol no solution, n_omni_only_sol omni only solution)"];
+    PED_ERRORS     -> PED_FIXED_OMNI [label=" swap n_ped_swap samples"];
+    PED_FIXED_OMNI -> FINAL_OMNI [label=" delete p_singleton families"];
 
 }
