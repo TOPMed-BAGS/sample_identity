@@ -1,0 +1,13 @@
+#!dot
+digraph {
+    FIXED_OMNI [label="omni 650 fixed (n=n_fixed_omni)", shape=box]
+    PED_FIXED_OMNI [label="omni pedigrees fixed (n=n_fixed_omni)", shape=box]
+    PED_ERRORS [label="pedigrees with errors (p=p_ped_errors)"]
+    FINAL_OMNI [label="omni final (n=n_final_omni)", shape=box]
+
+    FIXED_OMNI     -> PED_FIXED_OMNI [label=" merge n_merge_ped pedigrees, update n_update_fa fathers, update n_update_mo mothers"];
+    PED_FIXED_OMNI -> PED_ERRORS;
+    PED_ERRORS     -> FINAL_OMNI [label=" delete n_ped_del samples (n_no_sol no solution, n_omni_only_sol omni only solution)"];
+    PED_ERRORS     -> FINAL_OMNI [label=" swap n_ped_swap samples"];
+
+}
