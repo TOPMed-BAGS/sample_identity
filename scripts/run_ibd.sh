@@ -93,7 +93,7 @@ fi
 
 #Report the nr of overlapping samples
 n_650_omni_overlap=`cut -f2 -d' ' ../data/working/merged_650_omni.fam |  sort | uniq -d | wc -l | tr -s ' '`
-echo "n_650_omni_overlap echo $n_650_omni_overlap" > ../data/output/flow_nrs.txt
+echo "n_650_omni_overlap $n_650_omni_overlap" >> ../data/output/flow_nrs.txt
 
 #Run IBD
 plink --bfile ../data/working/merged_650_omni --genome --out ../data/output/initial
