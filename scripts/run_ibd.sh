@@ -96,7 +96,7 @@ n_650_omni_overlap=`cut -f2 -d' ' ../data/working/merged_650_omni.fam |  sort | 
 echo "n_650_omni_overlap echo $n_650_omni_overlap" > ../data/output/flow_nrs.txt
 
 #Run IBD
-plink --bfile ../data/working/merged_650_omni --genome --out ../data/output/initial.genome
+plink --bfile ../data/working/merged_650_omni --genome --out ../data/output/initial
 
 #Clean
 rm -r ../data/working
