@@ -10,7 +10,7 @@ digraph {
     UNRESOLVED     [label="unresolved samples (n=n_disc_unresolved)"]
     FIXED_OMNI     [label="omni 650 fixed (n=n_fixed_omni)", shape=box]
     PAR_FIXED_OMNI [label="omni parents fixed (n=n_parents_fixed_omni)", shape=box]
-    PED_ERRORS [label="samples with pedigrees errors (n=n_ped_errors)"]
+    PED_ERRORS [label="samples with pedigree errors (n=n_ped_errors)"]
     PED_FIXED_OMNI [label="omni pedigrees fixed (n=n_ped_fixed_omni, p=p_ped_fixed_omni)", shape=box]
     FINAL_OMNI     [label="omni final (n=n_final_omni, p=pfinal_omni)", shape=box]
 
