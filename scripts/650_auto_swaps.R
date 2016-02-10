@@ -13,8 +13,8 @@ cat("n_crossmatched", dim(crossmatched )[1], "\n", file="../data/output/flow_nrs
 
 #How many samples that are discordant do we have a better identity for in the 650 data?
 #How many samples do not?
-cat("n_disc_resolved", sum(discordant$IID2 %in% crossmatched$IID1), "\n", file="../data/output/flow_nrs.txt", append = T)
-cat("n_disc_unresolved", sum(!(discordant$IID2 %in% crossmatched$IID1)), "\n", file="../data/output/flow_nrs.txt", append = T)
+cat("n_disc_resolved", sum(discordant$IID2 %in% crossmatched$IID2), "\n", file="../data/output/flow_nrs.txt", append = T)
+cat("n_disc_unresolved", sum(!(discordant$IID2 %in% crossmatched$IID2)), "\n", file="../data/output/flow_nrs.txt", append = T)
 
 prev.id <- c(crossmatched $IID2[(substr(crossmatched $FID2, 0, 5) == "omni_")],
              crossmatched $IID1[(substr(crossmatched $FID1, 0, 5) == "omni_")])
@@ -27,5 +27,5 @@ swap.frame$reason <- "650_omni"
 write.table(swap.frame, "../data/output/omni_swaps.txt",  sep="\t", quote=F, row.names=F, col.names=T)
 
 #Write the unresolved discordant samples
-unresolved.ids <- discordant$IID2[!(discordant$IID2 %in% crossmatched$IID1)]
+unresolved.ids <- discordant$IID2[!(discordant$IID2 %in% crossmatched$IID2)]
 write.table(unresolved.ids, "../data/output/650_omni_unresolved_ids.txt",  sep="\t", quote=F, row.names=F, col.names=F)

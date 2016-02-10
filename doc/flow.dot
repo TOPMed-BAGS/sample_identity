@@ -27,7 +27,7 @@ digraph {
     UNRESOLVED     -> FIXED_OMNI [label=" delete n_del_unresolved sample"];
     FIXED_OMNI     -> PAR_FIXED_OMNI [label=" merge n_merge_ped pedigrees, update n_update_fa fathers, update n_update_mo mothers"];
     PAR_FIXED_OMNI -> PED_ERRORS;
-    PED_ERRORS     -> PED_FIXED_OMNI [label=" delete n_ped_del samples (n_no_sol no solution, n_omni_only_sol omni only solution)"];
+    PED_ERRORS     -> PED_FIXED_OMNI [label=" delete n_ped_del samples"];
     PED_ERRORS     -> PED_FIXED_OMNI [label=" swap n_ped_swap samples"];
     PED_FIXED_OMNI -> FINAL_OMNI [label=" delete p_singleton families"];
 

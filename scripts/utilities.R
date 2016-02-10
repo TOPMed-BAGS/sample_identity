@@ -1,6 +1,6 @@
 library('kinship2')
 
-genome <- read.table("../data/input/ibd_650_omni.genome", head=T, stringsAsFactors = F)
+genome <- read.table("../data/output/initial.genome", head=T, stringsAsFactors = F)
 pedigree <- read.csv("../data/input/pedigrees.txt")
 qc.frame <- read.table("../data/input/illumina_qc_report.txt", head=T, stringsAsFactors = F)
 sample.map <- read.csv("../data/input/sample_map.txt")
@@ -35,7 +35,7 @@ drawFamily <- function(fid) {
     if (iid %in% fam.650$V2) {
       sub.pedigree$col[sub.pedigree$PATIENT == iid] <- "blue"
     }
-    if ((iid %in% fam.omni$V2) & (iid %in% fam.650$V2))  {
+    if (sum((genome$IID1 == iid) & (genome$IID2 == iid)) > 0)  {
       sub.pedigree$col[sub.pedigree$PATIENT == iid] <- "purple"
       pi_hat <- genome$PI_HAT[(genome$IID1 == iid) & (genome$IID2 == iid)]
       if (pi_hat < 0.9) {
