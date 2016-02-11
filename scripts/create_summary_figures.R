@@ -1,0 +1,15 @@
+source("summary_figure_functions.R")
+genome.650.omni.before <- read.table("../data/working/initial_650_omni_pairs.genome", head=T, stringsAsFactors = F)
+genome.650.omni.after <- read.table("../data/working/fixed_650_omni_pairs.genome", head=T, stringsAsFactors = F)
+genome.650.before <- read.table("../data/working/initial_650.genome", head=T, stringsAsFactors = F)
+genome.omni.before <- read.table("../data/working/initial_omni.genome", head=T, stringsAsFactors = F)
+genome.650.after <- read.table("../data/working/fixed_650.genome", head=T, stringsAsFactors = F)
+genome.omni.after <- read.table("../data/working/fixed_omni.genome", head=T, stringsAsFactors = F)
+
+plotDuplicates(genome.650.omni.before, "../data/output/figures/duplicates_before.png")
+plotDuplicates(genome.650.omni.after, "../data/output/figures/duplicates_after.png")
+
+plotRelationships(genome.650.before, "../data/output/figures/650_relationships_before.png")
+plotRelationships(genome.omni.before, "../data/output/figures/omni_relationships_before.png")
+plotRelationships(genome.650.after, "../data/output/figures/650_relationships_after.png")
+plotRelationships(genome.omni.after, "../data/output/figures/omni_relationships_after.png")
