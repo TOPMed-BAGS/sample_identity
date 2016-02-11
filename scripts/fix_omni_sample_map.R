@@ -11,5 +11,5 @@ out.map$barnes_id[!is.na(out.map$new.id)] <- out.map$new.id[!is.na(out.map$new.i
 
 #Write the output file - barnes_id, plate_well, topmed_id
 out.map <- out.map[,1:3]
-write.table(out.map, "../data/output/fixed_sample_map.txt", sep="\t", quote=F, row.names=F, col.names=T)
+write.csv(out.map, "../data/output/fixed_sample_map.txt", quote=F, row.names=F, col.names=T)
 
