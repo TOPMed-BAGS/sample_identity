@@ -7,3 +7,5 @@ bash 4_get_650_omni_fixes.sh
 bash 5_fix_pedigrees.sh
 bash 6_fix_omni_sample_map.sh
 bash 7_run_ibd_after_fixes.sh
+
+bash 9_create_summary_figures.sh
