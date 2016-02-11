@@ -8,13 +8,15 @@ echo -e LP6008086-DNA_F10'\t'pedigree >> ../data/output/omni_delete.txt	#1500401
 echo -e LP6008084-DNA_H08'\t'pedigree >> ../data/output/omni_delete.txt	#15004503
 echo -e LP6008057-DNA_F06'\t'pedigree >> ../data/output/omni_delete.txt	#15018019
 echo -e LP6008083-DNA_E04'\t'pedigree >> ../data/output/omni_delete.txt	#15040070
+echo -e LP6008083-DNA_E05'\t'pedigree >> ../data/output/omni_delete.txt	#15040071
 echo -e LP6008059-DNA_G04'\t'pedigree >> ../data/output/omni_delete.txt	#15046005
 echo -e LP6008064-DNA_F02'\t'pedigree >> ../data/output/omni_delete.txt	#15198004
 echo -e LP6008064-DNA_B03'\t'pedigree >> ../data/output/omni_delete.txt	#15207002
 echo -e LP6008064-DNA_C03'\t'pedigree >> ../data/output/omni_delete.txt	#15210003
 echo -e LP6008064-DNA_H03'\t'pedigree >> ../data/output/omni_delete.txt	#15264003
-echo -e LP6008065-DNA_A09'\t'pedigree >> ../data/output/omni_delete.txt	#15378001
+echo -e LP6008065-DNA_G03'\t'pedigree >> ../data/output/omni_delete.txt	#15378003
 echo -e LP6008065-DNA_F05'\t'pedigree >> ../data/output/omni_delete.txt	#15378007
+echo -e LP6008083-DNA_G03'\t'pedigree >> ../data/output/omni_delete.txt	#15546002
 echo -e LP6008086-DNA_F02'\t'pedigree >> ../data/output/omni_delete.txt	#15558011
 
 #pedigree errors that can be resolved - swap
