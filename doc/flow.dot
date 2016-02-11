@@ -19,7 +19,8 @@ digraph {
     CLEAN_SIX      -> OVERLAP;
     CLEAN_OMNI     -> OVERLAP;
     OVERLAP        -> DISCORDANT;
-    OVERLAP        -> CROSSMATCH;
+    CLEAN_OMNI     -> CROSSMATCH;
+    CLEAN_SIX      -> CROSSMATCH;
     DISCORDANT     -> CROSSMATCH [label=" n_disc_resolved resolved"];
     DISCORDANT     -> UNRESOLVED [label=" n_disc_unresolved not resolved"];
     CROSSMATCH     -> FIXED_OMNI [label=" swap n_crossmatched samples"];
