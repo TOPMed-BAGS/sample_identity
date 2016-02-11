@@ -20,8 +20,8 @@ cat ../../scripts/fix_pedigree.R | R --vanilla
 #Report the number of updates
 n_merge_ped=`wc -l ../output/pedigree_merging.txt | tr -s ' ' | cut -f2 -d' '`
 n_merge_ped="$(($n_merge_ped-1))"
-n_update_fa=`grep Father pedigree_parents.txt | wc -l`
-n_update_mo=`grep Mother pedigree_parents.txt | wc -l`
+n_update_fa=`grep Father ../output/pedigree_parents.txt | wc -l`
+n_update_mo=`grep Mother ../output/pedigree_parents.txt | wc -l`
 echo "n_merge_ped $n_merge_ped" >> ../output/flow_nrs.txt
 echo "n_update_fa $n_update_fa" >> ../output/flow_nrs.txt
 echo "n_update_mo $n_update_mo" >> ../output/flow_nrs.txt
