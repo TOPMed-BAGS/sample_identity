@@ -3,14 +3,15 @@
 #Check user parameters
 if [ "$#" -eq  "0" ];
 then
-    echo "Usage: ${0##*/} <sample_map_file_name> <pedigree_file_name> <barcode_del_file_name>"
+    echo "Usage: ${0##*/} <sample_map_file_name> <pedigree_file_name> <out_file_name> <barcode_del_file_name>"
     exit
 fi
 
 #Setup
 sample_map_file_name=$1
 pedigree_file_name=$2
-barcode_del_file_name=$3
+out_file_name=$3
+barcode_del_file_name=$4
 mkdir ../data/working
 
 #Get overlapping SNPs
@@ -96,7 +97,7 @@ n_650_omni_overlap=`cut -f2 -d' ' ../data/working/merged_650_omni.fam |  sort | 
 echo "n_650_omni_overlap $n_650_omni_overlap" >> ../data/output/flow_nrs.txt
 
 #Run IBD
-plink --bfile ../data/working/merged_650_omni --genome --out ../data/output/initial
+plink --bfile ../data/working/merged_650_omni --genome --out $out_file_name
 
 #Clean
 rm -r ../data/working
