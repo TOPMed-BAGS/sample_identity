@@ -10,6 +10,3 @@ bash run_ibd.sh ../data/output/fixed_sample_map.txt ../data/input/fixed_pedigree
 
 #Cleanup tmp files
 rm tmp_*
-
-#Cleanup
-rm -r ../data/working/
