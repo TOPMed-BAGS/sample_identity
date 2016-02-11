@@ -46,6 +46,11 @@ cat map_fam.R | R --vanilla --args ../data/working/omni_barnes_id \
      ../data/working/omni_mapped omni \
      $pedigree_file_name
 
+#Map the 650 pedigree structure
+cat map_fam.R | R --vanilla --args  ../data/working/650_overlap \
+     ../data/working/650_mapped 650 \
+     $pedigree_file_name
+
 #Extract the relevant SNPs from the omni and 650 files
 mv  ../data/working/omni_mapped.fam ../data/working/tmp_omni.fam
 sed 's/rs/RS/g' ../data/working/tmp_omni.bim > ../data/working/new_tmp_omni.bim
@@ -53,7 +58,7 @@ mv ../data/working/new_tmp_omni.bim ../data/working/tmp_omni.bim
 plink --bfile ../data/working/tmp_omni \
       --extract ../data/working/overlap_snps_650_omni.txt \
       --make-bed --out ../data/working/omni
-plink --bfile ../data/working/650_overlap \
+plink --bfile ../data/working/650_mapped \
       --extract ../data/working/overlap_snps_650_omni.txt \
       --make-bed --out ../data/working/650
 
