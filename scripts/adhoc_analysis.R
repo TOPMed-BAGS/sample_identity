@@ -36,3 +36,17 @@ getRelationship("15558011", "15558002")
 
 
 getRelationship("15009001", "15009013")
+
+
+#Remaining issues
+fixed <- read.table("../data/output/fixed.genome", head=T, stringsAsFactors = T)
+fixed.650 <- read.table("../data/working/fixed_650.genome", head=T, stringsAsFactors = T)
+fixed.omni <- read.table("../data/working/fixed_omni.genome", head=T, stringsAsFactors = T)
+#Unknown parent-offspring
+fixed.650[(fixed.650$Z1 > 0.9) & (fixed.650$RT != "PO"),1:10]
+fixed.omni[(fixed.omni$Z1 > 0.9) & (fixed.omni$RT != "PO"),1:10]
+#Half-siblings that should be full siblings
+fixed.650[(fixed.650$PI_HAT > 0.4) & (fixed.650$RT == "HS"),1:10]
+fixed.omni[(fixed.omni$PI_HAT > 0.4) & (fixed.omni$RT == "HS"),1:10]
+
+
