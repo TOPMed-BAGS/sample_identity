@@ -21,7 +21,7 @@ echo -e LP6008086-DNA_F02'\t'pedigree >> ../data/output/omni_delete.txt	#1555801
 
 #pedigree errors that can be resolved - swap
 echo -e 15111004'\t'15022050'\t'pedigree >> ../data/output/omni_swaps.txt
-echo -e 15161002'\t'15060002'\t'pedigree >> ../data/output/omni_swaps.txt
+echo -e 15161002'\t'15161003'\t'pedigree >> ../data/output/omni_swaps.txt
 echo -e 15161013'\t'15162001'\t'pedigree >> ../data/output/omni_swaps.txt
 echo -e 15189002'\t'15189003'\t'pedigree >> ../data/output/omni_swaps.txt
 echo -e 15191005'\t'15191007'\t'pedigree >> ../data/output/omni_swaps.txt
