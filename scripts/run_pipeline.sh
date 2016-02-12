@@ -10,3 +10,5 @@ bash 7_run_ibd_after_fixes.sh
 bash 8_create_summary_figures.sh
 cat 9_check_sex.R | R --vanilla
 cat 10_get_singleton_families.R | R --vanilla
+cd ../doc
+bash build_flow.sh
