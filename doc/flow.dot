@@ -12,7 +12,7 @@ digraph {
     PAR_FIXED_OMNI [label="omni parents fixed (n=n_parents_fixed_omni)", shape=box]
     PED_ERRORS [label="samples with pedigree errors (n=n_ped_errors)"]
     PED_FIXED_OMNI [label="omni pedigrees fixed (n=n_ped_fixed_omni, p=p_ped_fixed_omni)", shape=box]
-    FINAL_OMNI     [label="omni final (n=n_final_omni, p=pfinal_omni)", shape=box]
+    FINAL_OMNI     [label="omni final (n=n_final_omni, p=p_final_omni)", shape=box]
 
     INIT_SIX       -> CLEAN_SIX [label=" -n_650_del samples (relationship errors)"];
     INIT_OMNI      -> CLEAN_OMNI [label=" -n_omni_del samples (n_omni_qc_del QC + n_omni_dupl_del IBD duplicates [18 duplicate pairs + 1 triplicate])"];
