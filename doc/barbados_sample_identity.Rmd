@@ -107,6 +107,7 @@ grid.raster(img)
 * omni\_singleton\_families.txt: List of sample IDs and family IDs where there is only 1 member in the family
 * pedigree\_merging.txt: List of pedigrees that were merged
 * pedigree\_parents.txt: List of father/mother updates that were made
+* pedigree\_sex.txt: List of sex updates that were made
 * fixed\_sample\_map.txt: Map of plate well ID, sample ID and Topmed ID after identity fixes were applied
 
 ## Additional documentation
