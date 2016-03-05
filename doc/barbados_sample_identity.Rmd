@@ -1,0 +1,193 @@
+#Who's Who in Barbados
+
+## Information relating to flow diagram
+
+* The Topmed data was also typed on the Omni array platform, which was used to estimate IBD for sample selection checking. In the flow diagram this data set is referrred to as "omni".
+* The 650 data set was already "clean", but some samples with dubious IBD with respect to the rest of their family members were removed, before checking concordance between the 650 and omni data set.
+* Basic QC was done on the omni data set: Firstly, SNPs with a low call rate (< 95%) or that may not be in HWE (HWE p-value < 0.001) were removed. Secondly, samples with an extremely low call rate (< 90 %), excess heterozygosity/homozygosity (ratio >3), or a combination of low call rate and suspect heterozygosity/homozygosity (call rate < 95% and heterozygosity/homozygosity ratio > 2.5, or call rate < 95% and heterozygosity/homozygosity < 1.75) were excluded. (The heterozygosity/homozygosity ratio cut-off values were selected based on visualizing the distribution of this statistic across all samples.)
+* IBD between pairs of samples was estimated using PLINK, using a LD pruned set of 105 938SNPs (LD based on the  650 data set and using
+PLINK parameters <i>indep-pairwise 100 25 0.1</i>)
+* Duplicate samples were defined as those samples with estimated IBD > 95%
+* There were some duplicate samples in the omni data set; the sample with the lowest call rate was removed
+* Discordant samples are samples with the same ID in the 650 and IBD data sets that are not IBD duplicates
+* Crossmatched samples are samples with different IDs in the 650 and IBD data sets, that are IBD duplicates
+* In the flow diagram, n = sample size, p = number of pedigreees; subsets of the data are shown in ellipses
+* Singleton pedigrees were identified but not removed from the data set per se, as these samples may be useful for the eQTL project
+
+## Flow diagram
+
+```{r fig.height=14.54, fig.width=12.85, echo=FALSE}
+library(png)
+library(grid)
+img <- readPNG("flow.png")
+grid.raster(img)
+```
+
+## Summary figures: 650 and Omni concordance
+
+The below figures show the estimated Z0 and Z2 values for 650-omni samples with identical IDs ("Duplicate IDs"; blue) and pairs of samples with different IDs ("Non-duplicate IDs"; black). Only duplicate samples should be in the uppermost left corner of the plots. 
+
+#### Before identity fixes were applied
+
+```{r, fig.width=4, fig.height=4, echo=FALSE}
+library(png)
+library(grid)
+img <- readPNG("../data/output/figures/duplicates_before.png")
+grid.raster(img)
+```
+
+#### After identity fixes were applied
+
+```{r, fig.width=4, fig.height=4, echo=FALSE}
+library(png)
+library(grid)
+img <- readPNG("../data/output/figures/duplicates_after.png")
+grid.raster(img)
+```
+
+## Summary figures of IBD relationships
+
+The below figures show the Z0 and Z2 values between pairs of samples. 
+Estimated relationships are coloured according the relationship between a pair of samples, 
+according to their estimated IBD. 
+Nuclear family relations are coloured according to the pedigree relationship.
+The estimated and nuclear family relationships plots should look similar. 
+Lastly, relationships that are not nuclear family relationships = other relationships, should not cluster 
+in the top or bottom leftmost corner of the plot, and there should not be full sibling relationships in the center of the plot.
+
+The half-siblings that cluster with full siblings in the after plots below are due to half-siblings with 
+the same father, and mothers that appear to be sisters, 
+so these half-siblings have a higher degree of relatedness than is usually the 
+case for half-siblings.
+The other relationships that cluster in the parent-offspring corner is due to new samples yet
+to be added to pedigrees, which is marked as an outstanding issue.
+
+#### 650 data before identity fixes were applied
+
+```{r, fig.width=5, fig.height=5, echo=FALSE}
+library(png)
+library(grid)
+img <- readPNG("../data/output/figures/650_relationships_before.png")
+grid.raster(img)
+```
+
+#### 650 data after identity fixes were applied
+
+```{r, fig.width=5, fig.height=5, echo=FALSE}
+library(png)
+library(grid)
+img <- readPNG("../data/output/figures/650_relationships_after.png")
+grid.raster(img)
+```
+
+#### Omni data before identity fixes were applied
+
+```{r, fig.width=5, fig.height=5, echo=FALSE}
+library(png)
+library(grid)
+img <- readPNG("../data/output/figures/omni_relationships_before.png")
+grid.raster(img)
+```
+
+#### Omni data after identity fixes were applied
+
+```{r, fig.width=5, fig.height=5, echo=FALSE}
+library(png)
+library(grid)
+img <- readPNG("../data/output/figures/omni_relationships_after.png")
+grid.raster(img)
+```
+
+## Output files
+
+* 650\_delete.txt: List of IDs that were deleted from the 650 data set prior to concordance checking
+* 650\_omni\_unresolved_ids.txt: Omni Sample IDs that were discordant with the 650 data set, for which the correct ID could not be found in the 650 data set
+* omni\_delete.txt: List of plate well IDs that were deleted from the omni data set, together with the reason for their deletion
+* omni\_swaps.txt: List of sample ID swaps that were done in the omni data set, together with the reason for the swap 
+* omni\_singleton\_families.txt: List of sample IDs and family IDs where there is only 1 member in the family
+* pedigree\_merging.txt: List of pedigrees that were merged
+* pedigree\_parents.txt: List of father/mother updates that were made
+* fixed\_sample\_map.txt: Map of plate well ID, sample ID and Topmed ID after identity fixes were applied
+
+## Additional documentation
+
+Reports per sample/pedigree, documenting why a particular action was taken.
+
+### Pedigree drawing annotations
+
+* Coloring of samples: black = sample not in the 650 or Omni data set; blue = sample in 650 data set only; red = sample in omni data set only; purple = sample in 650 and Omni data set
+* Sex and age for Omni samples are concatenated to the ID
+* A red star marks discordant pedigree and Illumina sex
+* If the 650 and Omni versions of a sample is not IBD duplicates, this is indicated with a strikethrough symbol
+* If the expected relationship does not match the actual relationship between a pair of samples,  this is indicated with a dashed line, and a text box annotates the actual IBD relationship (note that if a relationship is NOT annotated, it means that it is correct within that data set): blue dashed line: unexpected relationship in 650 data; red dashed line: unexpected relationship in omni data; purple dashed line: unexpected relationship in both the 650 and omni data
+* A red arrow indicates a suggested sample swap, e.g. when an Omni sample ID is swapped with its 650 identity: if 650:sample1 and omni:sample2 are IBD duplicates, there will be a red arrow from sample2 to sample1
+
+### Folder structure
+
+* delete\_650 folder: samples that were deleted from the 650 data set
+* 650\_omni\_unresolved: samples that were discordant between the 650 and omni data set, that were deleted because their identities could not be resolved
+* pedigree\_merge\_parents: updates to pedigrees, where pedigrees required merging, or parents (mostly fathers) were misspecified; includes a spreadsheet summarizing the actions taken
+* pedigree_delete: samples that were deleted because their IBD relationships were not as expected, and their identities could not be established
+* pedigree_swap: samples that were swapped because their IBD relationships were not as expected
+
+## Types of errors
+
+New samples, or particular plates, do not appear to be enriched for sample identity issues. 
+
+### "Typos"
+
+* 15003024 -->	15003027
+* 15004010 -->	15004016
+* 15024004 -->	15027004
+* 15045040 -->	15045004
+* 15043011 -->	15045011
+* 15050011 -->  15050012
+* 15105003 -->	15108003
+* 15002001 -->	15062001
+ 
+### Duplicate sample identities
+
+At first we thought these may be monozygotic twins but we confirmed with Cass that this is not the case.
+
+* 15041500 15041089
+* 15004502 15004503
+
+### New pedigrees of the same individuals that already exist in another family
+
+* 15111 within 15022
+* 15541 within 15037
+* 15334 within 15167
+* 15541 within 15037
+
+### Swaps between members of the same family
+
+#### Families that this is happening for 
+
+For a lot of these, the relatedness is correct in the 650 data but not in Omni
+
+* 15161
+* 15162
+* 15102
+* 15123
+* 15127
+* 15140
+* 15165
+* 15177
+* 15181
+* 15188
+* 15189
+* 15193
+* 15537
+* 15558
+
+#### New sample additions to families in the Omni data 
+
+These samples then turn out to be the same samples that are already in the 650 data
+
+* 15137001
+* 15123004
+* 15127003
+* 15127001
+* 15128001
+* 15141002
+* 15189003
