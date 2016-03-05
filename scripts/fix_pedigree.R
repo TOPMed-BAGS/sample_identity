@@ -10,7 +10,7 @@ for (i in 1:dim(fixes)[1]) {
     if (sample_id %in% ped$PATIENT) {
       ped$FAMILY[ped$PATIENT == sample_id] <- updated_id
     } else {
-      new_row <- data.frame(PATIENT=sample_id, 
+      new_row <- data.frame(PATIENT=sample_id,
                             FAMILY=updated_id,
                             FATHER=0,
                             MOTHER=0,
@@ -18,7 +18,7 @@ for (i in 1:dim(fixes)[1]) {
                             TWINSTAT=NA,
                             MZPAIR=NA,
                             DZPAIR=NA)
-      ped <- rbind(ped, new_row)     
+      ped <- rbind(ped, new_row)
     }
   } else {
     if (is.na(updated_id)) {
@@ -29,7 +29,7 @@ for (i in 1:dim(fixes)[1]) {
     if (relationship == "Father") {
       ped$FATHER[ped$PATIENT == sample_id] <- updated_id
       if (add_row) {
-        new_row <- data.frame(PATIENT=updated_id, 
+        new_row <- data.frame(PATIENT=updated_id,
                               FAMILY=ped$FAMILY[which(ped$PATIENT == sample_id)],
                               FATHER=0,
                               MOTHER=0,
@@ -43,7 +43,7 @@ for (i in 1:dim(fixes)[1]) {
     if (relationship == "Mother") {
       ped$MOTHER[ped$PATIENT == sample_id] <- updated_id
       if (add_row) {
-        new_row <- data.frame(PATIENT=updated_id, 
+        new_row <- data.frame(PATIENT=updated_id,
                               FAMILY=ped$FAMILY[which(ped$PATIENT == sample_id)],
                               FATHER=0,
                               MOTHER=0,
@@ -58,5 +58,10 @@ for (i in 1:dim(fixes)[1]) {
 }
 
 ped <- ped[order(ped$FAMILY, ped$PATIENT),]
+
+sex.fixes <- read.table("../output/pedigree_sex.txt")
+for (id in sex.fixes$V1) {
+    ped$SEX[ped$PATIENT == id] <- sex.fixes$V2[sex.fixes$V1 == id]
+}
 
 write.csv(ped, "../input/fixed_pedigrees.txt", quote=F, row.names=F, na="")
