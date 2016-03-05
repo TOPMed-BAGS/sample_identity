@@ -9,7 +9,7 @@ qc$ill_sex <- 1
 qc$ill_sex[qc$sex == "F"] <- 2
 names(qc)[c(1,2)] <- c("plate_well", "illumina_raw_sex")
 
-pedigree <- read.csv("../data/input/pedigrees.txt", stringsAsFactors = F)[,c(1,5)]
+pedigree <- read.csv("../data/input/fixed_pedigrees.txt", stringsAsFactors = F)[,c(1,5)]
 names(pedigree) <- c("barnes_id", "ped_sex")
 
 manifest <- read.csv("../data/input/manifest.txt")[,c(2,5)]   #Use the manifest to get the pedigree sex since according to Nick this is most recent
@@ -40,6 +40,6 @@ merged <- merge(merged, manifest)
 (sum(merged$ill_sex != merged$ped_sex))
 (sum((merged$ill_sex != merged$ped_sex) | merged$ill_sex != merged$man_sex))
 (merged[(merged$ill_sex != merged$ped_sex) |(merged$ill_sex != merged$man_sex) , -3])
-        
+
 write.table(merged[(merged$ill_sex != merged$ped_sex) |(merged$ill_sex != merged$man_sex) , -3],
   "../data/output/sex_mismatches.txt", sep="\t", quote=F, row.names=F, col.names=T)
