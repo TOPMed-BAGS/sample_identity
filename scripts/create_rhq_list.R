@@ -1,6 +1,13 @@
 new.rhq <- read.table("new_rhq.txt")  #A text file containing all the new RHQ IDs
 new.rhq$V2 <- "new_rhq"
 
+rhq.link.update <- read.table("new_id_link.txt", head=T, stringsAsFactors = F)
+rhq.link.update <- rhq.link.update[rhq.link.update$NEWID != rhq.link.update$PATIENT,]
+rhq.link.update <- rhq.link.update[-grep("NEW", rhq.link.update$PATIENT, ignore.case = T),]
+update.frame <- data.frame(V1=rhq.link.update$NEWID)
+update.frame$V2 <- "new_rhq"
+new.rhq <- rbind(new.rhq, update.frame)
+
 adult.rhqs <- read.delim("adult_rhq.txt")[,1]   #Extracted from BC Gene
 adult.rhqs <- adult.rhqs[!duplicated(adult.rhqs)]
 adult.rhqs <- gsub("-","", adult.rhqs)
