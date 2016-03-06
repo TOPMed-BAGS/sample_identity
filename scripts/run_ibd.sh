@@ -113,6 +113,8 @@ cp ../data/working/650.* ../data/output
 cp ../data/working/omni.* ../data/output
 rm ../data/output/650.log
 rm ../data/output/omni.log
+rm ../data/output/650.nosex
+rm ../data/output/omni.nosex
 
 #Clean
 rm -r ../data/working
