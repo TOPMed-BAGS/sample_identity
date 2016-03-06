@@ -22,7 +22,7 @@ echo -e LP6008087-DNA_C06'\t'pedigree >> ../data/output/omni_delete.txt	#1535700
 echo -e LP6008065-DNA_G03'\t'pedigree >> ../data/output/omni_delete.txt	#15378003
 echo -e LP6008065-DNA_F05'\t'pedigree >> ../data/output/omni_delete.txt	#15378007
 echo -e LP6008083-DNA_G03'\t'pedigree >> ../data/output/omni_delete.txt	#15546002
-echo -e LP6008086-DNA_H06'\t'sex >> ../data/output/omni_delete.txt	#15556001
+echo -e LP6008086-DNA_H06'\t'pedigree >> ../data/output/omni_delete.txt	#15556001 - sex discrepancy
 
 
 #pedigree errors that can be resolved - swap
