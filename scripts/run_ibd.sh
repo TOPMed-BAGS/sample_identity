@@ -108,5 +108,11 @@ echo "n_650_omni_overlap $n_650_omni_overlap" >> ../data/output/flow_nrs.txt
 #Run IBD
 plink --bfile ../data/working/merged_650_omni --genome --out $out_file_name
 
+#Copy fixed 650 and omni files to output so that it can be used for Prest
+cp ../data/working/650.* ../data/output
+cp ../data/working/omni.* ../data/output
+rm ../data/output/650.log
+rm ../data/output/omni.log
+
 #Clean
 rm -r ../data/working

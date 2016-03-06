@@ -13,6 +13,5 @@ n_with_rhq="$(($n_with_rhq-1))"
 echo "n_ped_del $n_ped_del" >> ../data/output/flow_nrs.txt
 echo "n_ped_swap $n_ped_swap" >> ../data/output/flow_nrs.txt
 echo "n_ped_errors $n_ped_errors" >> ../data/output/flow_nrs.txt
-echo "n_ped_fixed $n_ped_fixed" >> ../data/output/flow_nrs.txt
 echo "n_no_rhq $n_no_rhq" >> ../data/output/flow_nrs.txt
 echo "n_with_rhq $n_with_rhq" >> ../data/output/flow_nrs.txt
