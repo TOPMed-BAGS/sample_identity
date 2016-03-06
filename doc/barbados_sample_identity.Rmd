@@ -80,6 +80,8 @@ img <- readPNG("../data/output/figures/650_relationships_after.png")
 grid.raster(img)
 ```
 
+The parent-offspring relationship that shows up in the "other plot" is due to a relationship between 15009011-15009013; we could not confirm what the appropriate relationship update is from the RHQs, and since this pair is only typed in the 650 data, decided not to fix this.
+
 #### Omni data before identity fixes were applied
 
 ```{r, fig.width=5, fig.height=5, echo=FALSE}
