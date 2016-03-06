@@ -11,8 +11,9 @@ digraph {
     FIXED_OMNI     [label="omni 650 fixed (n=n_fixed_omni)", shape=box]
     PAR_FIXED_OMNI [label="omni parents fixed (n=n_parents_fixed_omni)", shape=box]
     PED_ERRORS [label="samples with pedigree errors (n=n_ped_errors)"]
-    PED_FIXED_OMNI [label="omni pedigrees fixed (n=n_ped_fixed_omni, p=p_ped_fixed_omni)", shape=box]
-    FINAL_OMNI     [label="omni final (n=n_final_omni, p=p_final_omni)", shape=box]
+    PED_FIXED_OMNI [label="omni pedigrees fixed (n=n_ped_fixed)", shape=box]
+    PED_WITH_OMNI  [label="omni with rhq (n=n_with_rhq)", shape=box]
+    FINAL_OMNI     [label="omni final (n=n_final_omni, p=p_ped)", shape=box]
 
     INIT_SIX       -> CLEAN_SIX [label=" -n_650_del samples (relationship errors)"];
     INIT_OMNI      -> CLEAN_OMNI [label=" -n_omni_del samples (n_omni_qc_del QC + n_omni_dupl_del IBD duplicates [18 duplicate pairs + 1 triplicate])"];
@@ -30,6 +31,7 @@ digraph {
     PAR_FIXED_OMNI -> PED_ERRORS;
     PED_ERRORS     -> PED_FIXED_OMNI [label=" delete n_ped_del samples"];
     PED_ERRORS     -> PED_FIXED_OMNI [label=" swap n_ped_swap samples"];
-    PED_FIXED_OMNI -> FINAL_OMNI [label=" delete p_singleton families"];
+    PED_FIXED_OMNI -> PED_WITH_OMNI [label=" delete n_no_rhq samples without RHQs"];
+    PED_WITH_OMNI -> FINAL_OMNI [label=" delete p_singleton families"];
 
 }

@@ -13,11 +13,11 @@ write.table(out.frame, "../data/output/singletons.txt", sep="\t", quote=F, row.n
 #Write output for flow diagram
 del.frame <- merged[!(merged$plate_well %in% out.frame$plate_well),]
 p_singleton <- dim(out.frame)[1]
-p_ped_fixed_omni <- length(unique(merged$FAMILY)) + sum(is.na(merged$FAMILY)) - 1
+#p_ped_fixed_omni <- length(unique(merged$FAMILY)) + sum(is.na(merged$FAMILY)) - 1
 n_final_omni <- dim(del.frame)[1]
 p_final_omni <- length(unique(del.frame$FAMILY))
 
 cat("p_singleton", p_singleton, "\n", file="../data/output/flow_nrs.txt", append = T)
-cat("p_ped_fixed_omni", p_ped_fixed_omni, "\n", file="../data/output/flow_nrs.txt", append = T)
+#cat("p_ped_fixed_omni", p_ped_fixed_omni, "\n", file="../data/output/flow_nrs.txt", append = T)
 cat("n_final_omni", n_final_omni, "\n", file="../data/output/flow_nrs.txt", append = T)
-cat("p_final_omni", p_final_omni, "\n", file="../data/output/flow_nrs.txt", append = T)
+cat("p_ped", p_final_omni, "\n", file="../data/output/flow_nrs.txt", append = T)
