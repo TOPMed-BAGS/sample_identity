@@ -1,6 +1,11 @@
 ped <- read.csv("pedigrees.txt", stringsAsFactors = F)
 fixes <- read.delim("../output/pedigree_parents.txt", head=T, stringsAsFactors = F)
 
+sex.fixes <- read.table("../output/pedigree_sex.txt")
+for (id in sex.fixes$V1) {
+    ped$SEX[ped$PATIENT == id] <- sex.fixes$V2[sex.fixes$V1 == id]
+}
+
 for (i in 1:dim(fixes)[1]) {
   add_row <- F
   sample_id <- fixes$id[i]
@@ -59,9 +64,5 @@ for (i in 1:dim(fixes)[1]) {
 
 ped <- ped[order(ped$FAMILY, ped$PATIENT),]
 
-sex.fixes <- read.table("../output/pedigree_sex.txt")
-for (id in sex.fixes$V1) {
-    ped$SEX[ped$PATIENT == id] <- sex.fixes$V2[sex.fixes$V1 == id]
-}
 
 write.csv(ped, "../input/fixed_pedigrees.txt", quote=F, row.names=F, na="")
