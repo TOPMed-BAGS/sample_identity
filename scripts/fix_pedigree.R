@@ -15,6 +15,10 @@ for (i in 1:dim(fixes)[1]) {
     if (sample_id %in% ped$PATIENT) {
       ped$FAMILY[ped$PATIENT == sample_id] <- updated_id
     } else {
+      sex <- 1
+      if (sample_id %in% sex.fixes$V1) {
+        sex <- sex.fixes$V2[sex.fixes$V1 == sample_id]
+      }
       new_row <- data.frame(PATIENT=sample_id,
                             FAMILY=updated_id,
                             FATHER=0,
