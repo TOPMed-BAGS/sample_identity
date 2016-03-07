@@ -23,7 +23,7 @@ for (i in 1:dim(fixes)[1]) {
                             FAMILY=updated_id,
                             FATHER=0,
                             MOTHER=0,
-                            SEX=1,
+                            SEX=sex,
                             TWINSTAT=NA,
                             MZPAIR=NA,
                             DZPAIR=NA)
