@@ -1,0 +1,36 @@
+---
+title: "Check QC samples identity"
+output: html_document
+---
+
+Samples that failed QC will not be reported to Topmed as samples without phenotype information. 
+However, we need to ensure that those samples which failed QC, do not have identity issues.
+
+### Which samples had extreme excess heterozygosity?
+
+Looking at <i>barbados_sample_identity/iteration_2/eda_reports/sample_quality.html</i>, I would classify extreme excess heterozygosity as a ratio > 4:
+
+- LP6008058-DNA_B02
+- LP6008063-DNA_B10	
+- LP6008063-DNA_D07	
+- LP6008065-DNA_C11
+
+These samples are highly likely to be contaminated and will mess up IBD estimates, so we cannot check their identities. 
+This should be okay because they are so extreme, that they will be excluded from WGS analysis.
+
+In addition, the 4 samples with errant VCF file sizes should also be excluded - they will also very likely be excluded from WGS analysis
+
+- LP6008058-DNA_G09
+- LP6008062-DNA_B11 
+- LP6008063-DNA_F08
+- LP6008065-DNA_E07
+
+### Run a dummy pipeline 
+
+A modified omni delete file, not containing samples removed for QC with the exception of the 8 samples above, and not containing samples removed for no RHQ, is scripted in <i>check_qc_sample_identity.sh</i> (based on scripts <i>6_fix_omni_sample_map.sh, 7_run_ibd_after_fixes.sh, 9_create_summary_figures.sh</i>).
+
+### Summary figures
+
+- Duplicate concordance check figures
+- Sample identity check figures
+- Email Nick...
