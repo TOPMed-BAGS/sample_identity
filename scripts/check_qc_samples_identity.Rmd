@@ -29,30 +29,31 @@ In addition, the 4 samples with errant VCF file sizes should also be excluded - 
 
 A modified omni delete file, not containing samples removed for QC with the exception of the 8 samples above, and not containing samples removed for no RHQ, has been scripted to go through the same process, in <i>check_qc_sample_identity.sh</i> (based on scripts <i>2_clean_omni.sh</i>, <i>6_fix_omni_sample_map.sh, 7_run_ibd_after_fixes.sh, 8_create_summary_figures.sh</i>).
 
-
 ```{r, fig.width=4, fig.height=4}
-system("bash check_qc_sample_identity.sh")
+#system("bash check_qc_sample_identity.sh")
 ```
 
 ### Summary figures
 
 #### Duplicate concordance check
 
-From the below, the following samples that failed QC are actually duplicates, and should be reported to Topmed:
-- 15137002
-- 15165003
-- 15186001
+From the below, the following samples that failed QC are actually duplicates, and should be reported to Topmed as unusable for association studies:
+
+- 15137002 = LP6008061-DNA_G11
+- 15165003 = LP6008062-DNA_G11
+- 15186001 = LP6008087-DNA_B04
 
 The following sample swaps should potentially be done in the WGS data, if the samples pass WGS QC (does not need to be reported to Topmed as lost, but the swap should be done before we give them phenotype information):
+
 - 15103003; should be 15103005
-- 15165003; should be 15165005
+- 15165003; should be 15165005 (NB: the ORIGINAL 15165003 that failed QC = LP6008062-DNA_G11 should be swapped; the original 15165002 passed QC and has been re-labbelled as 15165003_dup and matches up with the 650 version of sample 15165003, so all is okay with it.)
 
 Omni 15006021 has 22% missingness (and het/hom ratio 2.89) so its weird IBD sharing with its 650 version is not unexpected, 
 and probably does not point to an identity issue.
 
 ```{r, fig.width=4, fig.height=4}
 source("summary_figure_functions.R")
-genome.650.omni <- read.table("../data/working/qc_samples_check_650_omni_pairs.genome", head=T, stringsAsFactors = F)
+genome.650.omni <- read.table("../data/output/qc_samples_check_650_omni_pairs.genome", head=T, stringsAsFactors = F)
 plotDuplicates(genome.650.omni, "../data/output/figures/qc_id_check_duplicates.png")
 library(png)
 library(grid)
@@ -64,14 +65,70 @@ genome.650.omni[(genome.650.omni$IID1 == genome.650.omni$IID2) & (genome.650.omn
 
 #### Sample relationship check
 
+The red and blue dots with Z0 close to 0 are probably due to the low quality of the samples that failed QC and 
+are not worth looking into.
+
+Then, there is a half-sibling pedigree relationship that looks like it is really parent-offspring:
+This is due to the relationship between 15031050 and 15031043. 15031050 = LP6008059-DNA_B04 failed QC originally 
+because of fairly high heterozygosity/homozygosity ratio of 3.88 (missingness about 7%). 
+All the other relationships in this large family checks out, and both 15031050 and 15031043 are concordant 
+with their 650 versions (and the pair does not show up as discordant in the 650 after relationship plot), 
+so this overestimation of relatedness between the pair probably does not point to identity issues.
+
+There are non-nuclear family relationships that look like it is really parent-offspring: For 15002008 - 15002013: 
+15002008 = LP6008057-DNA_H01 has relatively high heterozygosity/homozygosity = 3.25 and high missingness (11%). 
+The 650-omni pairing of these samples are concordant, and with the exception of the relationship with the QC omni failed sample
+15002008, all relationships with these 2 samples check out. So this probably does not point to an identity issue.
+For 15043022 - 15043070, see the pedigree_delete report for this family. 
+
+There are also half-sibling relationships that look like they are really full siblings:
+These are mostly caused by some "extra" relatedness between families 15022 and 15002, where a father had children
+with 2 sisters.
+15134006 and 15134050 are actually full-siblings (see the pedigree report for that family), but since we 
+do not have RHQ's for these subjects, we did not bother with updating the pedigree (for this identity analysis, 
+we also kept samples with no RHQs)
+
+Finally there are some half-sibling relationships that do not cluster with the rest of the half-siblings:
+Most of these issues are caused by LP6008061-DNA_B01=15041024, which had really low heterozygosity/homozygosity=1.81 and 
+16% missingness, so this probably does not point to any real identity issues. 
+15558011 has no RHQ, and has been confirmed by Cass as not to have parents in the study, and is therefore not an 
+issue with a sample that failed QC that has identity issues. 
+
+In summary, there appears to be no additional issues with the identities of samples that failed QC,
+based on pairwise IBD relationships.
+
 ```{r, fig.width=4, fig.height=4}
-#source("summary_figure_functions.R")
-#genome.omni <- read.table("../data/working/qc_samples_check_omni.genome", head=T, stringsAsFactors = F)
+source("summary_figure_functions.R")
+genome.omni <- read.table("../data/output/qc_samples_check_omni.genome", head=T, stringsAsFactors = F)
 #Remove the above errant sample IDs from the list before creating the figure
-#img <- readPNG("../data/output/figures/qc_id_check_duplicates.png")
-#grid.raster(img)
-#genome.650.omni[(genome.650.omni$IID1 != genome.650.omni$IID2) & (genome.650.omni$PI_HAT > 0.9),c(1:4,7:10)]
-#genome.650.omni[(genome.650.omni$IID1 == genome.650.omni$IID2) & (genome.650.omni$PI_HAT < 0.9),c(1:4,7:10)]
+#For the duplicates this is OK because we have sample versions of them that do pass QC, so their identities 
+#do not have to be checked again
+#For the other samples this is OK because we have better identities for them, and in the case of 15006021, 
+#most of its IBD values will be really weird
+excl.list <- c("15137002", "15137002_dup",
+               "15165003", "15165003_dup",
+               "15186001", "15186001_dup",
+               "15103003", "15006021")
+genome.omni <- genome.omni[-which((genome.omni$IID1 %in% excl.list) | (genome.omni$IID2 %in% excl.list)),]
+plotRelationships(genome.omni, "../data/output/figures/qc_id_check_ibd_relationships.png")
+img <- readPNG("../data/output/figures/qc_id_check_ibd_relationships.png")
+grid.raster(img)
+
+#half-sibling pedigree relationship that looks like it is really parent-offspring
+genome.omni[(genome.omni$RT == "HS") & (genome.omni$Z1 > 0.8),]
+genome.650.omni[(genome.650.omni$IID1 == "15031050") &  (genome.650.omni$IID2 == "15031050"),]
+genome.650.omni[(genome.650.omni$IID1 == "15031043") &  (genome.650.omni$IID2 == "15031043"),]
+
+#non-nuclear family relationships that look like it is really parent-offspring
+genome.omni[!(genome.omni$RT %in% c("PO", "FS", "HS")) & (genome.omni$Z1 > 0.8),]
+genome.650.omni[(genome.650.omni$IID1 == "15002008") &  (genome.650.omni$IID2 == "15002008"),]
+genome.650.omni[(genome.650.omni$IID1 == "15002013") &  (genome.650.omni$IID2 == "15002013"),]
+
+#half-sibling relationships that look like they are really full siblings
+genome.omni[(genome.omni$RT == "HS") & (genome.omni$Z0 < 0.3) & (genome.omni$Z1 < 0.7),]
+
+#half-sibling relationships that do not cluster with the rest of the half-siblings
+genome.omni[(genome.omni$RT == "HS") & (genome.omni$Z0 > 0.59) & (genome.omni$Z1 < 0.22),]
 ```
 
 

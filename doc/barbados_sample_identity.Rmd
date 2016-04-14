@@ -62,6 +62,10 @@ case for half-siblings.
 The other relationships that cluster in the parent-offspring corner is due to new samples yet
 to be added to pedigrees, which is marked as an outstanding issue.
 
+Note that as a final check on the fixed data set, PREST v4.09 (from http://fisher.utstat.toronto.edu/sun/Software/Prest/) was run, 
+to check if all nuclear pedigree pairwise relationships are concordant with pairwise IBD estimates. 
+All pairwise relationships were indeed concordant. 
+
 #### 650 data before identity fixes were applied
 
 ```{r, fig.width=5, fig.height=5, echo=FALSE}
@@ -111,6 +115,13 @@ grid.raster(img)
 * pedigree\_parents.txt: List of father/mother updates that were made
 * pedigree\_sex.txt: List of sex updates that were made
 * fixed\_sample\_map.txt: Map of plate well ID, sample ID and Topmed ID after identity fixes were applied
+* sex\_mismatches.txt: A list of mismatches between the sex reported by Illumina, and pedigree or manifest sex. If all changed were applied correctly, there should only be discrepancies with the manifest sex (but not pedigree sex): these samples had their identities corrected and a sex mismatch with their original manifest sex is therefore likely.
+* 650/omni\_relationship\_mismatches.txt: A list of samples for which the expected nuclear family pairwise relationship does not match the estimated pairwise relationship (estimated using PREST). If all changes were applied correctly, these lists should be empty.
+
+<b><font color="red">Note that the fixed\_sample\_map.txt also excludes samples that failed QC. However, this was QC that was done on the Omni data,
+and although unlikely, some of these samples may pass WGS QC. 
+Some if the samples that failed QC may therefore need to be added back to the map file, before sending it to Topmed.
+The report <i>check_qc_samples_identity.Rmd</i> in the scripts directory list the QC filtered samples that had identity issues. </font></b>
 
 ## Additional documentation
 
