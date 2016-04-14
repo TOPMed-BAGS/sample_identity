@@ -12,6 +12,11 @@ sample_map_file_name=$1
 pedigree_file_name=$2
 out_file_name=$3
 barcode_del_file_name=$4
+omni_in_file=$5
+if [ "$omni_in_file" == ""  ];
+then
+    omni_in_file=../data/input/omni_clean
+fi
 mkdir ../data/working
 
 #Get overlapping SNPs
@@ -29,7 +34,7 @@ cp ../data/working/ld_650.prune.in ../data/working/overlap_snps_650_omni.txt
 #Delete barcode IDs if applicable
 if [ -e "$barcode_del_file_name" ];
 then
-    plink --bfile ../data/input/omni_clean \
+    plink --bfile $omni_in_file \
         --remove $barcode_del_file_name \
         --make-bed --out ../data/working/tmp_omni
 else
