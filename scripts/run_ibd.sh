@@ -17,6 +17,11 @@ if [ "$omni_in_file" == ""  ];
 then
     omni_in_file=../data/input/omni_clean
 fi
+omni_out_file=$6
+if [ "$omni_out_file" == ""  ];
+then
+    omni_out_file=omni
+fi
 mkdir ../data/working
 
 #Get overlapping SNPs
@@ -63,7 +68,7 @@ sed 's/rs/RS/g' ../data/working/tmp_omni.bim > ../data/working/new_tmp_omni.bim
 mv ../data/working/new_tmp_omni.bim ../data/working/tmp_omni.bim
 plink --bfile ../data/working/tmp_omni \
       --extract ../data/working/overlap_snps_650_omni.txt \
-      --make-bed --out ../data/working/omni
+      --make-bed --out ../data/working/${omni_out_file}
 mv ../data/working/650_overlap.bed  ../data/working/650_mapped.bed
 mv ../data/working/650_overlap.bim  ../data/working/650_mapped.bim
 plink --bfile ../data/working/650_mapped \
@@ -73,13 +78,13 @@ plink --bfile ../data/working/650_mapped \
 
 #Merge the files
 plink --bfile  ../data/working/650 \
-      --bmerge ../data/working/omni.bed \
-      ../data/working/omni.bim \
-      ../data/working/omni.fam \
+      --bmerge ../data/working/${omni_out_file}.bed \
+      ../data/working/${omni_out_file}.bim \
+      ../data/working/${omni_out_file}.fam \
       --make-bed --out ../data/working/merged_650_omni
 if [ -e "../data/working/merged_650_omni-merge.missnp" ];
 then
-    plink --bfile ../data/working/omni \
+    plink --bfile ../data/working/${omni_out_file} \
           --flip ../data/working/merged_650_omni-merge.missnp \
           --make-bed --out ../data/working/omni_flipped
     rm ../data/working/merged_650_omni-merge.missnp
@@ -106,16 +111,19 @@ then
     fi
 fi
 
-#Report the nr of overlapping samples
-n_650_omni_overlap=`cut -f2 -d' ' ../data/working/merged_650_omni.fam |  sort | uniq -d | wc -l | tr -s ' '`
-echo "n_650_omni_overlap $n_650_omni_overlap" >> ../data/output/flow_nrs.txt
+if [ "$omni_out_file" == "omni"  ];
+then
+    #Report the nr of overlapping samples
+    n_650_omni_overlap=`cut -f2 -d' ' ../data/working/merged_650_omni.fam |  sort | uniq -d | wc -l | tr -s ' '`
+    echo "n_650_omni_overlap $n_650_omni_overlap" >> ../data/output/flow_nrs.txt
+fi
 
 #Run IBD
 plink --bfile ../data/working/merged_650_omni --genome --out $out_file_name
 
 #Copy fixed 650 and omni files to output so that it can be used for Prest
 cp ../data/working/650.* ../data/output
-cp ../data/working/omni.* ../data/output
+cp ../data/working/${omni_out_file}.* ../data/output
 rm ../data/output/650.log
 rm ../data/output/omni.log
 rm ../data/output/650.nosex

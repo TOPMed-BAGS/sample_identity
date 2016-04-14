@@ -27,10 +27,52 @@ In addition, the 4 samples with errant VCF file sizes should also be excluded - 
 
 ### Run a dummy pipeline 
 
-A modified omni delete file, not containing samples removed for QC with the exception of the 8 samples above, and not containing samples removed for no RHQ, is scripted in <i>check_qc_sample_identity.sh</i> (based on scripts <i>6_fix_omni_sample_map.sh, 7_run_ibd_after_fixes.sh, 9_create_summary_figures.sh</i>).
+A modified omni delete file, not containing samples removed for QC with the exception of the 8 samples above, and not containing samples removed for no RHQ, has been scripted to go through the same process, in <i>check_qc_sample_identity.sh</i> (based on scripts <i>2_clean_omni.sh</i>, <i>6_fix_omni_sample_map.sh, 7_run_ibd_after_fixes.sh, 8_create_summary_figures.sh</i>).
+
+
+```{r, fig.width=4, fig.height=4}
+system("bash check_qc_sample_identity.sh")
+```
 
 ### Summary figures
 
-- Duplicate concordance check figures
-- Sample identity check figures
-- Email Nick...
+#### Duplicate concordance check
+
+From the below, the following samples that failed QC are actually duplicates, and should be reported to Topmed:
+- 15137002
+- 15165003
+- 15186001
+
+The following sample swaps should potentially be done in the WGS data, if the samples pass WGS QC (does not need to be reported to Topmed as lost, but the swap should be done before we give them phenotype information):
+- 15103003; should be 15103005
+- 15165003; should be 15165005
+
+Omni 15006021 has 22% missingness (and het/hom ratio 2.89) so its weird IBD sharing with its 650 version is not unexpected, 
+and probably does not point to an identity issue.
+
+```{r, fig.width=4, fig.height=4}
+source("summary_figure_functions.R")
+genome.650.omni <- read.table("../data/working/qc_samples_check_650_omni_pairs.genome", head=T, stringsAsFactors = F)
+plotDuplicates(genome.650.omni, "../data/output/figures/qc_id_check_duplicates.png")
+library(png)
+library(grid)
+img <- readPNG("../data/output/figures/qc_id_check_duplicates.png")
+grid.raster(img)
+genome.650.omni[(genome.650.omni$IID1 != genome.650.omni$IID2) & (genome.650.omni$PI_HAT > 0.9),c(1:4,7:10)]
+genome.650.omni[(genome.650.omni$IID1 == genome.650.omni$IID2) & (genome.650.omni$PI_HAT < 0.9),c(1:4,7:10)]
+```
+
+#### Sample relationship check
+
+```{r, fig.width=4, fig.height=4}
+#source("summary_figure_functions.R")
+#genome.omni <- read.table("../data/working/qc_samples_check_omni.genome", head=T, stringsAsFactors = F)
+#Remove the above errant sample IDs from the list before creating the figure
+#img <- readPNG("../data/output/figures/qc_id_check_duplicates.png")
+#grid.raster(img)
+#genome.650.omni[(genome.650.omni$IID1 != genome.650.omni$IID2) & (genome.650.omni$PI_HAT > 0.9),c(1:4,7:10)]
+#genome.650.omni[(genome.650.omni$IID1 == genome.650.omni$IID2) & (genome.650.omni$PI_HAT < 0.9),c(1:4,7:10)]
+```
+
+
+
