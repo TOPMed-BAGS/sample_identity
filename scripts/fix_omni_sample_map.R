@@ -9,6 +9,21 @@ ids.650 <- data.frame(V1=fam.650$V2)
 ids.650$V2 <- "650"
 rhq.ids <- rbind(rhq.ids, ids.650)
 
+#We have recovered rhqs/phenotypes for these 11 samples
+recovered.ids <- data.frame(V1=c("15182005",
+                   "15218003",
+                   "15219003",
+                   "15254002",
+                   "15306003",
+                   "15306004",
+                   "15396002",
+                   "15156001",
+                   "15171004",
+                   "15182004",
+                   "15197002"))
+recovered.ids$V2 <- "recovered_phenos"
+rhq.ids <- rbind(rhq.ids, recovered.ids)
+
 #Remove IDs marked for deletion
 out.map <- in.map[!(in.map$plate_well %in% del.ids$V1),1:3]
 
