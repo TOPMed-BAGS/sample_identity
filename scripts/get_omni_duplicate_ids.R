@@ -20,4 +20,4 @@ for (i in 1:dim(dupl.frame)[1]) {
 out.frame <- data.frame(plate_well_id = remove.ids[!duplicated(remove.ids)])
 out.frame$reason <- "duplicates"
 write.table(out.frame, "../output/omni_delete.txt",  sep="\t", quote=F, row.names=F, col.names=F, append=T)
-write.table(out.frame, "../output/omni_duplicates.txt",  sep="\t", quote=F, row.names=F, col.names=F, append=T)
+write.table(dupl.frame, "../output/omni_duplicates.txt",  sep="\t", quote=F, row.names=F, col.names=F, append=T)
