@@ -1,5 +1,5 @@
 #Read in the list created by the pipeline
-list <- read.csv("../data/output/fixed_sample_map.txt", head=T)
+list <- read.csv("../data/output/fixed_sample_map.txt", head=T, stringsAsFactors = F)
 list$delete <- 0
 list$delete_reason <- "NA"
 
@@ -25,6 +25,32 @@ add.list$delete_reason[add.list$plate_well %in% c("LP6008058-DNA_B02", "LP600806
 add.list$delete_reason[add.list$plate_well %in% c("LP6008058-DNA_G09", "LP6008062-DNA_B11", "LP6008063-DNA_F08", "LP6008065-DNA_E07")] <- "VCF file size very small"
 list <- rbind(list, add.list)
 
+#Change the column names to denote new Barnes IDs and old Barnes IDs
+names(list)[1] <- c("new_barnes_id")
+old.map <- read.csv("../data/input/sample_map.txt", head=T, stringsAsFactors = F)[,c(1,2)]
+names(old.map)[1] <- c("old_barnes_id")
+list <- merge(list, old.map)
+
+#Update the identities of duplicate samples that were deleted
+dupl.frame <- read.table("../data/output/omni_duplicates.txt")
+del.dupl <- list[list$delete_reason == "IBD duplicate",]
+for (plate.well in del.dupl$plate_well) {
+  if (plate.well %in% c("LP6008087-DNA_C01", "LP6008059-DNA_D09")){  #special case for the triples
+    dupl.plate.well <- "LP6008087-DNA_D01"
+  } else if (plate.well %in% dupl.frame$V1) {
+    dupl.plate.well <- dupl.frame$V2[dupl.frame$V1 == plate.well]
+  } else  if (plate.well %in% dupl.frame$V2) {
+    dupl.plate.well <- dupl.frame$V1[dupl.frame$V2 == plate.well]
+  } 
+  new.barnes.id <- list$new_barnes_id[(list$plate_well == dupl.plate.well)]
+  list$new_barnes_id[list$plate_well == plate.well] <- new.barnes.id
+}
+
+#Write table to inspect duplicates
+dupl.ids <- list$new_barnes_id[duplicated(list$new_barnes_id)]
+dupl.list <- list[list$new_barnes_id %in% dupl.ids,]
+write.table(dupl.list[order(dupl.list$new_barnes_id, dupl.list$delete),], "duplicate_barnes_ids.txt", 
+            sep="\t", quote=F, row.names=F, col.names=T)
 
 write.table(list, "barbados_wgs_list.txt",  sep="\t", quote=F, row.names=F, col.names=T)
 
