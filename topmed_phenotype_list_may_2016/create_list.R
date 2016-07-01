@@ -52,5 +52,34 @@ dupl.list <- list[list$new_barnes_id %in% dupl.ids,]
 write.table(dupl.list[order(dupl.list$new_barnes_id, dupl.list$delete),], "duplicate_barnes_ids.txt", 
             sep="\t", quote=F, row.names=F, col.names=T)
 
+#Samples that are deleted for the following reasons should get new dummy IDs and also be updated in the pedigree:
+## Omni IBD discordance no solution
+## Family IBD inconsistencies
+## New sample with no RHQ
+ped <- read.csv("../data/input/fixed_pedigrees.txt", stringsAsFactors = F)
+dummy.frame <- list[(list$delete == 1) & 
+                      (list$delete_reason %in% c("Omni IBD discordance no solution", 
+                                                 "Family IBD inconsistencies", 
+                                                 "New sample with no RHQ")),]
+dummy.i <- 900
+for (id in dummy.frame$old_barnes_id) {
+  new.id <- paste0(substr(list$old_barnes_id[list$old_barnes_id == id],1,5), dummy.i)
+  list$new_barnes_id[list$old_barnes_id == id] <- new.id
+  ped$PATIENT[ped$PATIENT == id] <- new.id
+  ped$FATHER[ped$FATHER == id] <- new.id
+  ped$MOTHER[ped$MOTHER == id] <- new.id
+  dummy.i <- dummy.i + 1  
+} 
+
+#Annotate the output with Topmed failures
+topmed.failed <- read.delim("topmed_failed_annotation.txt", stringsAsFactors = F)
+list <- merge(list, topmed.failed)
+
+#Write the output
+write.table(list$new_barnes_id[(list$delete == 1) & 
+                                 (list$delete_reason %in% c("Omni IBD discordance no solution", 
+                                                            "Family IBD inconsistencies", 
+                                                            "New sample with no RHQ"))], "new_dummy_ids.txt", quote=F, row.names=F, col.names = F)
+write.csv(ped, "fixed_pedigrees.txt", quote=F, row.names=F)
 write.table(list, "barbados_wgs_list.txt",  sep="\t", quote=F, row.names=F, col.names=T)
 
