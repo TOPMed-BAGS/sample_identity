@@ -71,6 +71,17 @@ for (id in dummy.frame$old_barnes_id) {
   dummy.i <- dummy.i + 1  
 } 
 
+#See email to Meher, "Re: missing pedigrees", sent 6 July 2016, for the following manual updates:
+dummy.id <- 15161904 
+list$new_barnes_id[list$new_barnes_id == dummy.id] <- list$old_barnes_id[list$new_barnes_id == dummy.id] 
+ped$PATIENT[ped$PATIENT == dummy.id] <- 15161002
+id <- 15004502
+new.id <- paste0(substr(list$old_barnes_id[list$old_barnes_id == id],1,5), dummy.i)
+list$new_barnes_id[list$old_barnes_id == id] <- new.id
+ped$PATIENT[ped$PATIENT == id] <- new.id
+ped$FATHER[ped$FATHER == id] <- new.id
+ped$MOTHER[ped$MOTHER == id] <- new.id
+
 #Annotate the output with Topmed failures
 topmed.failed <- read.delim("topmed_failed_annotation.txt", stringsAsFactors = F)
 list <- merge(list, topmed.failed)
